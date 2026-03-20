@@ -1,0 +1,45 @@
+{% extends "categoria/_tabla_base.html" %}
+{% load static %}
+{% block titulo %}
+Categorías habilitadas
+{% endblock %}
+
+{% block filas %}
+{% for categoria in categorias_habilitadas %}
+<tr>
+    <td class="text-center align-middle">
+        <div class="d-flex justify-content-center align-items-center">
+            <input  type="checkbox"
+                    class="form-check-input m-0 toggle-ver-ventas"
+                    data-categoria-id="{{ categoria.id }}"
+                    id="ver_en_ventas_{{ categoria.id }}"
+                    title="{% if categoria.ver_en_ventas %}
+                            Quitar esta categoría del catálogo de ventas
+                            {% else %}
+                            Mostrar esta categoría en el catálogo de ventas
+                            {% endif %}"
+                    {% if categoria.ver_en_ventas %}checked{% endif %}>
+        </div>
+    </td>
+    <td>{{ categoria.nombre|upper }}</td>
+    <td class="text-center">{{ categoria.abreviatura }}</td>
+    <td class="text-center">
+        <a href="{% url 'inhabilitar_categoria' categoria.id %}" class="btn btn-sm btn-outline-danger"
+            title="Inhabilitar categoría">
+            <i class="fa-solid fa-x"></i>
+        </a>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" class="text-muted text-center">
+        No hay categorías habilitadas
+    </td>
+</tr>
+{% endfor %}
+<script>
+    const TOGGLE_VER_VENTAS_URL = "{% url 'toggle_ver_en_ventas' %}";
+    const CSRF_TOKEN = "{{ csrf_token }}";
+</script>
+<script src="{% static 'categoria/js/ventas_categoria.js' %}"></script>
+{% endblock %}

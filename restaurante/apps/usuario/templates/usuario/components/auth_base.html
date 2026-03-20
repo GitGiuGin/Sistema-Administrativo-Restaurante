@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}UMAMI{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
+    <link href="{% static 'usuario/css/login.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="login-card">
+
+        <!-- ESPACIO IZQUIERDO -->
+        <div class="card-left d-flex justify-content-center align-items-center">
+            <img src="#" alt="Logo" width="300">
+        </div>
+
+        <!-- CONTENIDO DERECHO DINÁMICO -->
+        <div class="login-container">
+            <div class="logo">
+                <h1>UMAMI</h1>
+                <span>Sistema Administrativo</span>
+            </div>
+
+            {% block form_content %}
+            {% endblock %}
+        </div>
+
+    </div>
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

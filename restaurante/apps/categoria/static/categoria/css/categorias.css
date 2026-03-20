@@ -1,0 +1,22 @@
+html, body {
+    height: 100%;
+}
+
+.top-content {
+    max-height: 40vh;
+}
+
+.bottom-content {
+    min-height: 60vh;
+}
+
+.table-scroll {
+    overflow-y: auto;
+}
+
+.table-scroll thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 1;
+}

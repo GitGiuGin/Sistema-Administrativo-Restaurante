@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'categoria/css/categorias.css' %}">
+<div class="d-flex flex-column h-100">
+    <div class="flex-shrink-0 top-content">
+        <h2 class="mb-4">Categoria de los productos</h2>
+        <p>Desde aquí puedes crear y organizar las categorías de productos, así como controlar cuáles se encuentran activas o inactivas.</p>
+        <div class="border-bottom mb-4"></div>
+        {% include "categoria/_form_categoria.html" %}
+        <div class="border-bottom mb-4"></div>
+    </div>
+    <div class="flex-grow-1 bottom-content">
+        <div class="row h-100">
+            <!-- HABILITADAS -->
+            <div class="col-md-6 h-100">
+                {% include "categoria/_tabla_habilitadas.html" %}
+            </div>
+            <!-- INHABILITADAS -->
+            <div class="col-md-6 h-100">
+                {% include "categoria/_tabla_inhabilitadas.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include "messages/modal_info.html" %}
+<script src="{% static 'js/messages/modal_info.js' %}"></script>
+{% endblock %}

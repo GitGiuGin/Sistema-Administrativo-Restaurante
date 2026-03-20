@@ -1,0 +1,20 @@
+{% extends "messages/modal_alert.html" %}
+
+{% block modal_id %}confirmInhabilitarModal{% endblock %}
+{% block modal_label_id %}confirmInhabilitarModalLabel{% endblock %}
+{% block modal_titulo %}Inhabilitar{% endblock %}
+{% block modal_cuerpo %}
+¿Seguro que quieres inhabilitar el producto <strong id="nombreProducto"></strong>?
+{% endblock %}
+{% block modal_botones %}
+<form method="post" id="formInhabilitar">
+    {% csrf_token %}
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+    </button>
+    <button type="submit" class="btn btn-danger">
+        <i class="fa-solid fa-ban"></i> Inhabilitar
+    </button>
+</form>
+{% endblock %}
+

@@ -1,0 +1,117 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'venta/css/carrito_compras.css' %}">
+<div class="col-md-5 h-100 d-flex">
+    <div class="card d-flex flex-column flex-fill">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>
+                <i class="fa-solid fa-cart-shopping"></i> Carrito de compras
+            </strong>
+            <span class="badge bg-secondary" id="carrito-count">0 ítems</span>
+        </div>
+
+        <!-- Scroll SOLO aquí -->
+        <div class="card-body p-0">
+
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                    <tr>
+                        <th style="width: 40%;">Producto</th>
+                        <th style="width: 15%;" class="text-center">Precio</th>
+                        <th style="width: 15%;" class="text-center">Cantidad</th>
+                        <th style="width: 15%;" class="text-center">Subtotal</th>
+                        <th style="width: 15%;" class="text-center">Acción</th>
+                    </tr>
+                    </tr>
+                </thead>
+                <tbody id="carrito-body" class="table-body-scroll">
+                    <tr id="carrito-vacio">
+                        <td colspan="5" class="text-center text-muted">
+                            No hay productos en el carrito
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- Footer fijo -->
+        <div class="card-footer">
+            <form id="form-registrar-venta" method="POST" action="{% url 'registrar_venta' %}">
+                {% csrf_token %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong>
+                        <i class="fa-solid fa-coins"></i> Total
+                    </strong>
+                    <h5 class="mb-0" id="carrito-total">Bs. 0.00</h5>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <label class="form-label mb-1">Monto recibido</label>
+                        <input type="number" name="monto_recibido" id="monto-recibido"
+                            class="form-control form-control-sm" placeholder="Bs. 0.00" min="0" step="0.01" required>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label mb-1">Vuelto</label>
+                        <input type="text" id="monto-vuelto" class="form-control form-control-sm" value="Bs. 0.00"
+                            disabled>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+
+                    <div class="col-6">
+                        <select class="form-select" name="metodo_pago" required>
+                            <option selected disabled hidden>Método de pago</option>
+                            <option>Efectivo</option>
+                            <option>QR</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <input type="hidden" name="carrito_data" id="carrito-data-input">
+                        <button type="submit" id="btn-registrar-venta" class="btn btn-success w-100">
+                            Registrar Venta
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+{% if messages %}
+<script src="{% static 'js/messages/modal_info.js' %}"></script>
+{% endif %}
+{% if carrito_temp %}
+{{ carrito_temp|json_script:"carrito-data" }}
+
+<script>
+    window.addEventListener("load", function () {
+
+        const carritoGuardado = JSON.parse(
+            document.getElementById("carrito-data").textContent
+        );
+
+        carritoGuardado.forEach(item => {
+
+            const productoElemento = document.querySelector(
+                `.product-clickable[data-id="${item.id}"]`
+            );
+
+            if (productoElemento) {
+                for (let i = 0; i < item.cantidad; i++) {
+                    productoElemento.click();
+                }
+            }
+
+        });
+
+    });
+</script>
+{% endif %}

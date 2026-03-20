@@ -1,0 +1,88 @@
+/* ===============================
+   PRODUCTOS – GRID CON SCROLL
+   =============================== */
+
+/* Contenedor scrolleable del grid */
+.product-grid-scroll {
+    overflow-y: auto;
+    max-height: clamp(200px, 65vh, 700px);
+    min-height: 0;
+}
+
+/* ===============================
+   CARD DE PRODUCTO
+   =============================== */
+
+/* Card clickeable */
+.product-card {
+    height: 120px;        /* ALTURA FIJA */
+    min-height: 120px;
+    width: 100%;
+    flex-shrink: 0;       /* Evita que se aplaste */
+}
+
+.product-clickable {
+    cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* Hover */
+.product-clickable:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Click */
+.product-clickable:active {
+    transform: scale(0.98);
+}
+
+/* Accesibilidad teclado */
+.product-clickable:focus-visible {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* ===============================
+   CONTENIDO INTERNO DE LA CARD
+   =============================== */
+
+.product-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0.5rem;
+}
+
+/* Precio siempre abajo a la izquierda */
+.product-card .precio {
+    margin-top: auto;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* ===============================
+   FIX BOOTSTRAP (NO APLASTAR FILAS)
+   =============================== */
+
+.product-grid-scroll > .col-6,
+.product-grid-scroll > .col-md-4,
+.product-grid-scroll > .col-lg-3 {
+    display: flex;
+}
+
+/* ===============================
+   AJUSTES RESPONSIVE
+   =============================== */
+
+@media (max-height: 700px) {
+    .product-grid-scroll {
+        max-height: clamp(160px, 55vh, 450px);
+    }
+
+    .product-card {
+        height: 100px;
+        min-height: 100px;
+    }
+}

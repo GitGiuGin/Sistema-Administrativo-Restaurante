@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% with request.GET.tab as tab %}
+
+<link rel="stylesheet" href="{% static 'producto/css/productos.css' %}">
+<h3 class="mb-0">
+    <i class="fa-solid fa-bowl-food"></i> Productos
+</h3>
+<small class="text-muted">Administra los platos disponibles, sus costos y precios de venta.</small>
+<div class="border-bottom mb-2 mt-2"></div>
+{% include "producto/_form_producto.html" %}
+
+<div class="border-bottom mb-2"></div>
+<h4 class="mb-2">Listado</h3>
+
+<!-- Buscador de productos -->
+<div class="row mb-3">
+    <div class="col-md-6 col-lg-4">
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input
+                type="text"
+                id="buscarProducto"
+                class="form-control"
+                placeholder="Buscar producto por producto..."
+                autocomplete="off"
+            >
+        </div>
+    </div>
+</div>
+
+<ul class="nav nav-tabs mb-0" id="productosTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link {% if tab == 'habilitadas' or not tab %}active{% endif %}"
+            id="habilitadas-tab" data-bs-toggle="tab" data-bs-target="#habilitadas" type="button">
+            Habilitadas
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link {% if tab == 'inhabilitadas' %}active{% endif %}"
+            id="inhabilitadas-tab" data-bs-toggle="tab" data-bs-target="#inhabilitadas" type="button">
+            Inhabilitadas
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade {% if tab == 'habilitadas' or not tab %}show active{% endif %}"
+        id="habilitadas"
+        data-estado="habilitado">
+        {% include "producto/_tabla_productos.html" with productos=productos_habilitados tipo="habilitado" %}
+    </div>
+
+    <div class="tab-pane fade {% if tab == 'inhabilitadas' %}show active{% endif %}"
+        id="inhabilitadas"
+        data-estado="inhabilitado">
+        {% include "producto/_tabla_productos.html" with productos=productos_inhabilitados tipo="inhabilitado" %}
+    </div>
+</div>
+
+{% include "producto/_editar_producto.html" %}
+{% include "producto/alerts/inhabilitar.html" %}
+{% include "producto/alerts/habilitar.html" %}
+{% include "messages/modal_info.html" %}
+
+<script src="{% static 'producto/js/editar_producto.js' %}"></script>
+<script src="{% static 'producto/js/inhabilitar_producto.js' %}"></script>
+<script src="{% static 'producto/js/habilitar_producto.js' %}"></script>
+<script src="{% static 'producto/js/redireccion_categoria.js' %}"></script>
+<script src="{% static 'js/messages/modal_info.js' %}"></script>
+<script src="{% static 'producto/js/buscar_producto.js' %}"></script>
+
+{% endwith %}
+{% endblock %}

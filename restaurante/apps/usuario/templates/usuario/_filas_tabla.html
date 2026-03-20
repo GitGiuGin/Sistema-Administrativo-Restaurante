@@ -1,0 +1,91 @@
+{% for user in usuarios %}
+<tr data-estado="{% if user.is_active %}activo{% else %}inactivo{% endif %}">
+
+    <td>
+        {{ user.last_name }} {{ user.first_name }}
+    </td>
+
+    <td class="fw-semibold">
+        {{ user.username }}
+    </td>
+
+    <td>
+        {% for group in user.groups.all %}
+        <span class="badge bg-primary-subtle text-primary border">
+            {{ group.name }}
+        </span>
+        {% empty %}
+        <span class="text-muted small">Sin rol</span>
+        {% endfor %}
+    </td>
+
+    <td>
+        {% if user.is_active %}
+        <span class="badge rounded-pill bg-success-subtle text-success">
+            Activo
+        </span>
+        {% else %}
+        <span class="badge rounded-pill bg-danger-subtle text-danger">
+            Inactivo
+        </span>
+        {% endif %}
+    </td>
+
+    <td class="text-center">
+        {% if request.user.is_superuser and request.user != user %} 
+            <a href="#" class="btn btn-sm btn-outline-info me-1 btn-detalle-usuario" data-url="{% url 'detalle_usuario' %}?id={{ user.id }}" data-bs-toggle="modal" data-bs-target="#modalDetalleUsuario" title="Ver detalles del usuario">
+                <i class="fa-solid fa-eye"></i>
+            </a>
+            <a href="{% url 'editar_usuario' user.token %}" class="btn btn-sm btn-outline-primary me-1" title="Editar usuario">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'reset_password' user.id %}" class="btn btn-sm btn-outline-warning" title="Reiniciar contraseña">
+                <i class="fa-solid fa-key"></i>
+            </a>
+            {% if user.is_active %}
+                <a href="{% url 'inhabilitar_usuario' user.id %}" class="btn btn-sm btn-outline-danger" title="Inhabilitar usuario">
+                    <i class="fa-solid fa-x"></i>
+                </a>
+            {% else %}
+                <a href="{% url 'habilitar_usuario' user.id %}" class="btn btn-sm btn-outline-success" title="Habilitar usuario">
+                    <i class="fa-solid fa-check"></i>
+                </a>
+            {% endif %}
+        {% elif not request.user.is_superuser and user.role_level < user_level and request.user != user %}
+            <a href="#" class="btn btn-sm btn-outline-info me-1 btn-detalle-usuario" data-url="{% url 'detalle_usuario' %}?id={{ user.id }}" data-bs-toggle="modal" data-bs-target="#modalDetalleUsuario" title="Ver detalles del usuario"> 
+                <i class="fa-solid fa-eye"></i>
+            </a>
+            <a href="{% url 'editar_usuario' user.token %}" class="btn btn-sm btn-outline-primary me-1" title="Editar usuario"> 
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'reset_password' user.id %}" class="btn btn-sm btn-outline-warning" title="Reiniciar contraseña">
+                <i class="fa-solid fa-key"></i>
+            </a>
+            {% if user.is_active %}
+                <a href="{% url 'inhabilitar_usuario' user.id %}" class="btn btn-sm btn-outline-danger" title="Inhabilitar usuario">
+                    <i class="fa-solid fa-x"></i>
+                </a>
+            {% else %}
+                <a href="{% url 'habilitar_usuario' user.id %}" class="btn btn-sm btn-outline-success" title="Habilitar usuario">
+                    <i class="fa-solid fa-check"></i>
+                </a>
+            {% endif %}
+        {% else %}
+            <button class="btn btn-sm btn-outline-secondary" disabled
+                    title="No tienes permisos para modificar este usuario"
+                    onclick="return false;">
+                <i class="fa-solid fa-lock"></i>
+            </button>
+        {% endif %}
+    </td>
+
+</tr>
+
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center py-5 text-muted">
+        <i class="fa-regular fa-circle-xmark fa-2x mb-2"></i><br>
+        No hay usuarios registrados.
+    </td>
+</tr>
+{% endfor %}

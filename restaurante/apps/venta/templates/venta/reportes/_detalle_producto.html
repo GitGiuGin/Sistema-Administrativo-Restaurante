@@ -1,0 +1,70 @@
+<div class="border-bottom pb-2 mb-2">
+    <div class="position-relative">
+        <h6 class="mb-0 fw-bold text-center">
+            UMAMI RESTAURANTE
+        </h6>
+        <button type="button" class="btn-close position-absolute top-50 end-0 translate-middle-y"
+            data-bs-dismiss="modal" aria-label="Close">
+        </button>
+    </div>
+
+    <div class="text-center">
+        <small>Resumen de Productos Vendidos</small><br>
+        <small>
+            {% if fecha_mes %}
+                {{ fecha_mes|date:"F Y"|capfirst }}
+            {% else %}
+                {{ fecha|date:"d/m/Y" }}
+            {% endif %}
+        </small>
+    </div>
+</div>
+
+<table class="table table-sm table-borderless mb-2">
+    <thead class="border-bottom">
+        <tr>
+            <th>Producto</th>
+            <th class="text-center">P. Unit</th>
+            <th class="text-center">Cant</th>
+            <th class="text-end">Ingreso</th>
+            <th class="text-end">Costo</th>
+            <th class="text-end">Gan.</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categoria, data in categorias.items %}
+
+        <tr class="table">
+            <td colspan="6" class="fw-bold">
+                {{ categoria }}
+            </td>
+        </tr>
+
+        {% for item in data.productos %}
+        <tr>
+            <td>{{ item.producto__nombre }}</td>
+            <td class="text-center">{{ item.precio_venta|floatformat:2 }}</td>
+            <td class="text-center">{{ item.cantidad_total }}</td>
+            <td class="text-end">{{ item.ingreso_total|floatformat:2 }}</td>
+            <td class="text-end">{{ item.costo_total|floatformat:2 }}</td>
+            <td class="text-end">{{ item.ganancia|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+
+        <tr class="fw-bold border-top">
+            <td colspan="2" class="text-end">Subtotal {{ categoria }}:</td>
+            <td class="text-center">{{ data.total_cantidad }}</td>
+            <td class="text-end">{{ data.total_ingreso|floatformat:2 }}</td>
+            <td class="text-end">{{ data.total_costo|floatformat:2 }}</td>
+            <td class="text-end">{{ data.total_ganancia|floatformat:2 }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="6">
+                <hr class="my-1">
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>

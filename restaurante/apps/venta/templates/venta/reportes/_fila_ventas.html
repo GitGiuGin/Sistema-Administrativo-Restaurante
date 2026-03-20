@@ -1,0 +1,62 @@
+{% for venta in ventas %}
+<tr>
+    <td>
+        {% if tipo_reporte == "mensual" %}
+        {{ venta.periodo|date:"Y" }} - {{ venta.periodo|date:"F"|capfirst }}
+        {% else %}
+        {{ venta.periodo|date:"d/m/Y" }}
+        {% endif %}
+    </td>
+    <td class="text-end">
+        {{ venta.total_qr|default:0|floatformat:2 }}
+    </td>
+    <td class="text-end">
+        {{ venta.total_efectivo|default:0|floatformat:2 }}
+    </td>
+    <td class="text-end fw-bold text-success">
+        {{ venta.total_dia|default:0|floatformat:2 }}
+    </td>
+    <td class="text-end text-danger">
+        {{ venta.total_costo|default:0|floatformat:2 }}
+    </td>
+    <td class="text-end">
+        {{ venta.gastos|floatformat:2 }}
+    </td>
+    <td class="text-end fw-bold text-primary">
+        {% if venta.utilidad > 0 %}
+            <span class="text-success">+{{ venta.utilidad|default:0|floatformat:2 }}</span>
+        {% elif venta.utilidad < 0 %}
+            <span class="text-danger">{{ venta.utilidad|default:0|floatformat:2 }}</span>
+        {% else %}
+            <span class="text-muted">0.00</span>
+        {% endif %}  
+    </td>
+    <td class="text-center">
+        {% if tipo_reporte == "mensual" %}
+        <a href="{% url 'reporte_ventas_diaria' %}?mes={{ venta.periodo|date:'Y-m' }}" class="btn btn-sm btn-outline-info"
+            title="Ver detalle de ventas del mes">
+            <i class="fa-solid fa-eye"></i>
+        </a>
+        <a href="#" class="btn btn-sm btn-outline-primary btn-detalle-dia" data-mes="{{ venta.periodo|date:'Y-m' }}"
+            title="Ver resumen de productos vendidos del mes">
+            <i class="fa-solid fa-list"></i>
+        </a>
+        {% else %}
+        <a href="{% url 'ver_ventas' %}?fecha={{ venta.periodo|date:'Y-m-d' }}" class="btn btn-sm btn-outline-info me-1"
+            title="Ver detalle de ventas del día">
+            <i class="fa-solid fa-eye"></i>
+        </a>
+        <a href="#" class="btn btn-sm btn-outline-primary btn-detalle-dia" data-fecha="{{ venta.periodo|date:'Y-m-d' }}"
+            title="Ver resumen de productos vendidos del día">
+            <i class="fa-solid fa-list"></i>
+        </a>
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="8" class="text-center text-muted py-4">
+        No hay ventas registradas.
+    </td>
+</tr>
+{% endfor %}

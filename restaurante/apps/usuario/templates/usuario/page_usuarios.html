@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Gestión de Usuarios{% endblock %}
+{% load static %}
+{% block content %}
+<div class="container-fluid h-100 d-flex flex-column overflow-hidden">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-users text-primary me-2"></i>
+                Gestión de Usuarios
+            </h4>
+            <p class="text-muted mb-0 small">
+                Administración de cuentas, roles y permisos del sistema
+            </p>
+        </div>
+
+        <a href="{% url 'form_usuario' %}" class="btn btn-primary shadow-sm">
+            <i class="fa-solid fa-user-plus me-2"></i>
+            Crear Usuario
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="row mb-4 justify-content-center g-3">
+        <div class="col-6 col-md-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-3">
+                    <h6 class="text-muted small">Total Usuarios</h6>
+                    <h5 class="fw-bold mb-0">{{ total }}</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-3">
+                    <h6 class="text-muted small">Total Activos</h6>
+                    <h5 class="fw-bold text-success mb-0">{{ activos }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-3">
+                    <h6 class="text-muted small">Total Inactivos</h6>
+                    <h5 class="fw-bold text-danger mb-0">{{ inactivos }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buscador -->
+    <div class="row mb-3">
+        <div class="col-md-5">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white">
+                    <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                </span>
+                <input type="text" id="buscarUsuario" class="form-control" placeholder="Buscar usuario..." autocomplete="off" data-tab="{{ current_tab }}">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    {% with request.GET.tab as current_tab %}
+    <ul class="nav nav-tabs mb-0">
+        <li class="nav-item">
+            <a href="?tab=habilitadas" id="tabActivos" class="nav-link {% if current_tab != 'inhabilitadas' %}active{% endif %}">
+                Activos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="?tab=inhabilitadas" id="tabInactivos" class="nav-link {% if current_tab == 'inhabilitadas' %}active{% endif %}">
+                Inactivos
+            </a>
+        </li>
+    </ul>
+    {% endwith %}
+
+    <!-- Tabla -->
+    <div class="flex-grow-1 overflow-hidden">
+        <div class="card border-0 shadow-sm h-100 d-flex flex-column">
+
+            <div class="card-body p-0 flex-grow-1 overflow-auto">
+
+                <div class="table-responsive h-100">
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light sticky-top">
+                            <tr class="text small text-muted">
+                                <th>Nombres</th>
+                                <th>Usuario</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="userTable">
+                            {% include "usuario/_filas_tabla.html" %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% include "usuario/components/_modal_detalle.html" %}
+{% include "messages/modal_info.html" %}
+<script src="{% static 'usuario/js/modal_detalle.js' %}"></script>
+<script src="{% static 'usuario/js/filtros_tabla.js' %}"></script>
+{% endblock %}

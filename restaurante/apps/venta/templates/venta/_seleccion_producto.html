@@ -1,0 +1,59 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'venta/css/seleccion_producto.css' %}">
+<div class="col-md-7 h-100 d-flex">
+    <div class="card flex-fill mb-0">
+
+        <div class="card-header">
+            <strong>
+                <i class="fa-solid fa-table-list"></i> Lista de productos
+            </strong>
+        </div>
+
+        <div class="card-body p-2 d-flex flex-column min-vh-0">
+
+            <!-- Buscador -->
+            <div class="mb-2">
+                <input type="text" id="buscador-producto" class="form-control form-control-sm" placeholder="Buscar producto...">
+            </div>
+
+            <!-- Categorías (opcional) -->
+            <div class="mb-2 d-flex gap-2 flex-wrap">
+                <button class="btn btn-sm btn-outline-primary btn-categoria active"
+                        data-categoria="all">
+                    Todos
+                </button>
+                {% for categoria in categorias %}
+                    <button class="btn btn-sm btn-outline-primary btn-categoria"
+                            data-categoria="{{ categoria.id }}">
+                        {{ categoria.nombre }}
+                    </button>
+                {% endfor %}
+            </div>
+
+            <!-- Grid de productos -->
+            <div class="row g-2 overflow-auto product-grid-scroll">
+                {% for producto in productos %}
+                <div class="col-6 col-md-4 col-lg-3 product-item" 
+                    data-categoria="{{ producto.categoria.id }}"
+                    data-nombre="{{ producto.nombre|lower }}">
+                    <div class="card h-100 text-center product-card product-clickable" role="button" tabindex="0"
+                            data-id="{{ producto.id }}"
+                            data-nombre="{{ producto.nombre }}"
+                            data-precio="{{ producto.precio_venta|stringformat:'.2f' }}">
+                        <div class="card-body p-2 d-flex flex-column h-100">
+                            <div>
+                                <div class="fw-semibold small">
+                                    {{ producto.nombre }}
+                                </div>
+                            </div>
+                            <div class="mt-auto text-start fw-semibold small">
+                                Bs {{ producto.precio_venta }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

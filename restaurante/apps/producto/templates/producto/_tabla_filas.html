@@ -1,0 +1,43 @@
+{% for producto in productos %}
+<tr>
+    <td>{{ producto.nombre|upper }}</td>
+    <td class="text-center">{{ producto.categoria.abreviatura }}</td>
+    <td class="text-center">{{ producto.precio_costo }}</td>
+    <td class="text-center">{{ producto.precio_venta }}</td>
+    <td class="text-center">
+        {% if tipo == "habilitado" %}
+        <a href="#" class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal"
+            data-bs-target="#editProductoModal"
+            data-producto="{{ producto.id }}"
+            data-nombre="{{ producto.nombre }}"
+            data-categoria="{{ producto.categoria_id }}"
+            data-preciocosto="{{ producto.precio_costo }}"
+            data-precioventa="{{ producto.precio_venta }}"
+            title="Editar producto">
+            <i class="fa-solid fa-pen"></i>
+        </a>
+        <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+            data-bs-target="#confirmInhabilitarModal"
+            data-producto="{{ producto.id }}"
+            data-nombre="{{ producto.nombre }}"
+            title="Inhabilitar producto">
+            <i class="fa-solid fa-x"></i>
+        </a>
+        {% else %}
+        <a href="#" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+            data-bs-target="#confirmHabilitarModal"
+            data-producto="{{ producto.id }}"
+            data-nombre="{{ producto.nombre }}"
+            title="Habilitar producto">
+            <i class="fa-solid fa-check"></i>
+        </a>
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        No se encontraron productos
+    </td>
+</tr>
+{% endfor %}

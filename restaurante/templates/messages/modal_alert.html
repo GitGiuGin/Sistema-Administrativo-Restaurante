@@ -1,0 +1,19 @@
+<div class="modal fade" id="{% block modal_id %}modalGenerico{% endblock %}" tabindex="-1" aria-labelledby="{% block modal_label_id %}modalGenericoLabel{% endblock %}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-black">
+                <h5 class="modal-title">{% block modal_titulo %}Título del modal{% endblock %}</h5>
+            </div>
+            <div class="modal-body">
+                {% block modal_cuerpo %}Contenido del modal{% endblock %}
+            </div>
+            <div class="modal-footer">
+                {% block modal_botones %}
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="#" class="btn btn-primary">Aceptar</a>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+

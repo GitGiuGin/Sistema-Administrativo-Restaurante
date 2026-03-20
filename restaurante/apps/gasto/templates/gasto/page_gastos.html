@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Gestión de Gastos{% endblock %}
+{% load static %}
+{% load grupos %}
+{% block content %}
+<div class="container-fluid h-100 d-flex flex-column overflow-hidden">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-money-bill-wave text-success me-2"></i>
+                Gestión de Gastos
+            </h4>
+            <p class="text-muted mb-0 small">
+                Control y seguimiento de egresos del sistema
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <button href="#" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalGastoOpe">
+                <i class="fa-solid fa-cash-register me-2"></i>
+                Registrar egreso
+            </button>
+            {% if request.user|has_any_group:"Administrador" %}
+            <button class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#modalGastoAdmin">
+                <i class="fa-solid fa-file-invoice-dollar me-2"></i>
+                Registrar gasto
+            </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Buscador -->
+    <div class="card shadow-sm border-0 mb-2">
+        <div class="card-body">
+            <form method="GET" class="row g-2 align-items-end">
+                <input type="hidden" name="tab" value="{{ current_tab }}">
+                <div class="col-md-2">
+                    <label class="form-label small text-muted">Buscar por fecha</label>
+                    <input type="date" name="fecha" value="{{ request.GET.fecha }}" class="form-control">
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtrar
+                    </button>
+                </div>
+
+                <div class="col-md-2">
+                    <a href="{% url 'page_gastos' %}" class="btn btn-outline-secondary w-100">
+                        Limpiar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-0">
+        <li class="nav-item">
+            <a href="?tab=operativos{% if request.GET.fecha %}&fecha={{ request.GET.fecha }}{% endif %}" class="nav-link {% if current_tab == 'operativos' %}active{% endif %}">
+                Operativos
+            </a>
+        </li>
+        {% if request.user|has_any_group:"Administrador" %}
+        <li class="nav-item">
+            <a href="?tab=administrativos&fecha={{ request.GET.fecha }}" class="nav-link {% if current_tab == 'administrativos' %}active{% endif %}">
+                Administrativos
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+
+    <!-- Tabla -->
+    <div class="flex-grow-1 overflow-hidden">
+        <div class="card border-0 shadow-sm h-100 d-flex flex-column">
+            <div class="card-body p-0 flex-grow-1 overflow-auto">
+                <div class="table-responsive h-100">
+                    <table class="table table-hover align-middle mb-0">
+                        {% if current_tab == "operativos" %}
+                            {% include "caja/_tabla_caja.html" %}
+                        {% else %}
+                            {% include "gasto/_tabla_administrativos.html" with gastos=gastos %}
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% include "usuario/components/_modal_detalle.html" %}
+{% include "messages/modal_info.html" %}
+{% include "gasto/administrativos/_form_administrativo.html" with categorias=categorias_gastos %}
+{% include "gasto/operativos/_form_operativo.html" with turnos=turnos %}
+{% endblock %}

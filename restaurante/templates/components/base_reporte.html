@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Reportes{% endblock %}
+{% load static %}
+{% block content %}
+<div class="container-fluid h-100 d-flex flex-column overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-0">
+        <div>
+            <h3 class="mb-0">
+                {% block reporte_icono %}
+                {% endblock %}
+
+                {% block reporte_titulo %}
+                Reporte
+                {% endblock %}
+            </h3>
+            <small class="text-muted">
+                {% block reporte_subtitulo %}
+                Resumen
+                {% endblock %}
+            </small>
+        </div>
+    </div>
+
+    <!-- FILTROS DINÁMICOS -->
+    <div class="card shadow-sm border-0 mb-2">
+        <div class="card-body">
+            {% block filtros %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- TABLA DINÁMICA -->
+    {% block tabla %}
+    {% endblock %}
+
+</div>
+
+{% block modales %}{% endblock %}
+{% block scripts %}{% endblock %}
+
+{% endblock %}

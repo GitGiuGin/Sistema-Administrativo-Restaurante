@@ -1,0 +1,23 @@
+<div class="border rounded-3 p-3 h-100 d-flex flex-column">
+    <h5 class="mb-3">
+        {% block titulo %}{% endblock %}
+    </h5>
+
+    <div class="table-scroll flex-grow-1">
+        <table class="table table-sm table-hover align-middle mb-0">
+            <thead class="table-light sticky-top">
+                <tr>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th class="text-center">Abreviatura</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% block filas %}
+                {% endblock %}
+            </tbody>
+        </table>
+    </div>
+</div>

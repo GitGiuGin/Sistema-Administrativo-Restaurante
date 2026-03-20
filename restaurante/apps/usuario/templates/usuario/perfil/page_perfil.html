@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Perfil de Usuario{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'usuario/css/perfil/estilos.css' %}">
+<div class="row g-4">
+
+    <div class="col-lg-3">
+        <div class="card shadow-lg border-0 rounded-4 text-center p-4 h-100">
+
+            <div class="avatar-circle mx-auto mb-3">
+                {{ usuario.username|slice:":1"|upper }}
+            </div>
+
+            <h4 class="mb-0">{{ usuario.username }}</h4>
+            <small class="text-muted">{{ usuario.email }}</small>
+
+            <hr>
+
+            <p><strong>Teléfono</strong><br>{{ usuario.telefono|default:"No registrado" }}</p>
+            <p><strong>Documento</strong><br>{{ usuario.documento|default:"-" }}</p>
+
+            <hr>
+
+            <p>
+                <strong>Rol</strong><br>
+                {% if usuario.is_superuser %}
+                Administrador
+                {% elif usuario.groups.all %}
+                {{ usuario.groups.all.0.name }}
+                {% else %}
+                Usuario
+                {% endif %}
+            </p>
+
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+
+        <div class="card shadow-lg border-0 rounded-4 p-4 mb-4">
+            <h5 class="mb-3">Información personal</h5>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nombre:</strong> {{ usuario.first_name|default:"-" }}</p>
+                    <p><strong>Apellido:</strong> {{ usuario.last_name|default:"-" }}</p>
+                    <p><strong>Fecha nacimiento:</strong> {{ usuario.fecha_nacimiento|default:"-" }}</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p><strong>Zona:</strong> {{ usuario.zona|default:"-" }}</p>
+                    <p><strong>Calle:</strong> {{ usuario.calle|default:"-" }}</p>
+                    <p><strong>N° Casa:</strong> {{ usuario.numero_casa|default:"-" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4 p-4 mb-4">
+            <h5 class="mb-3">Información del sistema</h5>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Fecha registro:</strong> {{ usuario.date_joined }}</p>
+                    <p><strong>Último acceso:</strong> {{ usuario.last_login }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4 p-4">
+            <div class="d-flex justify-content-end gap-3">
+                <a href="{% url 'inicio' %}" class="btn btn-secondary px-4 d-flex align-items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Atrás</span>
+                </a>
+                <a href="#" class="btn btn-secondary btn-danger me-1 btn-cambiar-password"
+                    data-url="{% url 'form_contraseña' %}?id={{ user.id }}" data-bs-toggle="modal"
+                    data-bs-target="#modalCambiarPassword" title="Cambiar contraseña">
+                    <i class="fa-solid fa-key"></i> Cambiar contraseña
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="modalCambiarPassword" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="contenidoModalCambiarPassword">
+
+        </div>
+    </div>
+</div>
+<script src="{% static 'usuario/js/perfil/modal_password.js' %}"></script>
+<script src="{% static 'usuario/js/perfil/modal_forms.js' %}"></script>
+{% endblock %}

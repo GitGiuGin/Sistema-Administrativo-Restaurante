@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #111827, #1f2937);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CARD AMPLIADO */
+.login-card {
+    background: #ffffff;
+    width: 750px;
+    max-width: 95%;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    display: flex;
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* ESPACIO IZQUIERDO (BLANCO) */
+.card-left {
+    flex: 1;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* LOGIN ORIGINAL (NO MODIFICADO) */
+.login-container {
+    flex: 1;
+    padding: 40px 30px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #111827;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    font-size: 13px;
+    color: #374151;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #f97316;
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 8px;
+    background: #f97316;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    background: #ea580c;
+}
+
+.extra {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.extra a {
+    text-decoration: none;
+    color: #f97316;
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .login-card {
+        flex-direction: column;
+    }
+
+    .card-left {
+        height: 150px;
+    }
+}

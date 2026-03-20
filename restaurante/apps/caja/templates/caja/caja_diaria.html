@@ -1,0 +1,44 @@
+{% extends "components/base_reporte.html" %}
+{% load static %}
+{% block reporte_titulo %}
+<i class="fa-solid fa-coins"></i> Estado de caja
+{% endblock %}
+
+{% block reporte_subtitulo %}
+Reporte de ingresos y egresos del día
+{% endblock %}
+
+{% block filtros %}
+<form method="GET" class="row g-2 align-items-end">
+
+    <div class="col-md-2">
+        <label class="form-label small text-muted">Buscar por fecha</label>
+        <input type="date" name="fecha" value="{{ request.GET.fecha }}" class="form-control">
+    </div>
+
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="fa-solid fa-magnifying-glass"></i> Filtrar
+        </button>
+    </div>
+
+    <div class="col-md-2">
+        <a href="{% url 'ver_caja' %}" class="btn btn-outline-secondary w-100">
+            Limpiar
+        </a>
+    </div>
+</form>
+{% endblock %}
+
+{% block tabla %}
+{% include "caja/_tabla_caja.html" %}
+{% include "venta/_detalle_venta.html" with ventas=ventas %}
+{% endblock %}
+
+{% block modales %}
+{% include "venta/components/_modal_detalle.html" %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'venta/js/reportes/modal_reportes.js' %}"></script>
+{% endblock %}

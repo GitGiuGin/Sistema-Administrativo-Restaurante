@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+{% load grupos %}
+{% block content %}
+<div class="container-fluid vh-100 d-flex flex-column">
+
+    <!-- HEADER -->
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="mb-0">
+                <i class="fa-solid fa-receipt"></i> Ventas del Día ({{ fecha|date:"d/m/Y" }})
+            </h3>
+            <small class="text-muted">Resumen general de pedidos registrados</small>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body py-2 px-3 text-center">
+                <div class="small text-muted">Total del día</div>
+                <div class="fw-bold text-success fs-5">Bs. {{ total }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCIONES -->
+    {% if request.user|has_any_group:"Cajero" %}
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <div class="mb-3 d-flex justify-content">
+            <a href="{% url 'ventas' %}" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-plus"></i> Nuevo Pedido
+            </a>
+        </div>
+        <div>
+            <a href="{% url 'inicio' %}" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- GRID DE VENTAS -->
+    <div class="flex-grow-1 overflow-auto px-2">
+        <div class="row g-3">
+
+            {% for venta in ventas %}
+
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <div class="card shadow-sm h-100 border-0 venta-card">
+
+                    <div class="card-body d-flex flex-column">
+
+                        <!-- Encabezado -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="fw-bold">
+                                Pedido #{{ venta.id }}
+                            </div>
+
+                            {% if venta.estado == "ANULADO" %}
+                            <span class="badge bg-danger">Anulado</span>
+                            {% elif venta.estado == "PENDIENTE" %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                            {% else %}
+                            <span class="badge bg-success">Pagado</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Info -->
+                        <div class="small text-muted mb-1 d-flex justify-content-between">
+                            <div>
+                                <i class="fa-regular fa-clock"></i>
+                                {{ venta.fecha|time:"H:i" }}
+                            </div>
+                            {% if request.user|has_any_group:"Administrador,Supervisor" %}
+                            <div>
+                                <i class="fa-solid fa-user"></i>
+                                {{ venta.usuario|upper }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="small mb-2">
+                            <i class="fa-solid fa-credit-card"></i>
+                            {{ venta.metodo_pago }}
+                        </div>
+
+                        <!-- Total -->
+                        <div class="mt-auto">
+                            <div class="fw-bold fs-5 text-success">
+                                Bs {{ venta.total }}
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-outline-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#detalleVentaModal{{ venta.id }}" data-venta-id="{{ venta.id }}">
+                                Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% empty %}
+
+            <div class="col-12 text-center mt-5">
+                <div class="alert alert-info">
+                    No hay ventas registradas hoy.
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .venta-card {
+        transition: all 0.15s ease;
+    }
+
+    .venta-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+    }
+</style>
+
+<!-- Modal de cada venta -->
+{% include "venta/_detalle_venta.html" with ventas=ventas %}
+{% endblock %}
