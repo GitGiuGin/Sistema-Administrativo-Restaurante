@@ -1,0 +1,19 @@
+{% extends "components/_base_tabla_reporte.html" %}
+{% load grupos %}
+{% block table_head %}
+<tr>
+    <th>Apertura</th>
+    <th>Usuario</th>
+    <th class="text-center">QR (Bs)</th>
+    <th class="text-center">Efec. (Bs)</th>
+    <th>Cierre</th>
+    <th class="text-center">Decl. (Bs)</th>
+    <th class="text-center">Dif. (Bs)</th>
+    <th class="text-center">Turno</th>
+    <th class="text-center">Acciones</th> 
+</tr>
+{% endblock %}
+
+{% block table_body %}
+    {% include "turnos/_fila_turnos.html" %}
+{% endblock %}

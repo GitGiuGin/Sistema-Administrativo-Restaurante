@@ -1,0 +1,50 @@
+{% load grupos %}
+{% for turno in turnos %}
+<tr>
+    <td>{{ turno.fecha_apertura|date:"d/m/Y" }} - {{ turno.fecha_apertura|time:"H:i" }}</td>
+    <td>{{ turno.usuario.username|upper }}</td>
+    <td class="text-center">
+        {{ turno.total_qr }}
+    </td>
+    <td class="text-center"
+        >{{ turno.efectivo_neto }}
+    </td>
+    <td>
+        {% if not turno.abierta %}
+            {{ turno.fecha_cierre|date:"d/m/Y" }} - {{ turno.fecha_cierre|time:"H:i" }}
+        {% endif %}
+    </td>
+    <td class="text-end">
+        {{ turno.monto_cierre|default:"" }}
+    </td>
+    <td class="text-end fw-bold">
+        {% if not turno.abierta %}
+            {% if turno.diferencia > 0 %}
+                <span class="text-success">+{{ turno.diferencia }}</span>
+            {% elif turno.diferencia < 0 %}
+                <span class="text-danger">{{ turno.diferencia }}</span>
+            {% else %}
+                <span class="text-muted">0.00</span>
+            {% endif %}             
+        {% endif %}
+    </td>
+    <td class="text-center">
+        {{ turno.estado }}
+    </td>
+    {% if request.user|has_any_group:"Administrador,Supervisor" %}
+    <td class="text-center">
+        <a href="{% url 'ver_caja_turno' turno.id %}" class="btn btn-sm btn-outline-info me-1"
+        title="Ver detalles del turno">
+            <i class="fa-solid fa-eye"></i>
+        </a>
+    </td>
+    {% endif %}
+</tr>
+{% empty %}
+<tr>
+    <td colspan="8" class="text-center text-muted py-4">
+        No movimientos registrados.
+    </td>
+</tr>
+{% endfor %}
+

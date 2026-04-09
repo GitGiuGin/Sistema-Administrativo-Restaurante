@@ -1,0 +1,80 @@
+{% load static %}
+<div class="modal fade" id="modalGastoOpe" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-sm">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <h5 class="modal-title fw-semibold">
+                    <i class="fa-solid fa-cash-register text-primary me-2"></i>
+                    Registrar egreso de caja
+                </h5>
+            </div>
+
+            <!-- FORM -->
+            <form method="post" action="{% url 'crear_egreso' %}">
+                {% csrf_token %}
+                <input type="hidden" name="tipo" value="EGRESO">
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <!-- CAJA -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fa-solid fa-cash-register"></i> Caja / Turno
+                        </label>
+
+                        <select name="turno_id" class="form-select" required>
+                            <option value="" hidden>Seleccionar caja abierta</option>
+
+                            {% for turno in turnos %}
+                            <option value="{{ turno.id }}">
+                                👤 {{ turno.usuario.first_name }} {{ turno.usuario.last_name }}
+                                ({{ turno.fecha_apertura|date:"d/M H:i" }})
+                            </option>
+                            {% empty %}
+                            <option value="">No hay turno abierto</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- MONTO -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fa-solid fa-coins"></i> Monto
+                        </label>
+
+                        <input type="number" step="0.01" name="monto" class="form-control" placeholder="Bs 0.00"
+                            required>
+                    </div>
+
+                    <!-- CONCEPTO -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fa-solid fa-file-lines"></i> Concepto
+                        </label>
+
+                        <input type="text" name="concepto" class="form-control" placeholder="Ej: Compra de insumos"
+                            required>
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-check me-1"></i>
+                        Registrar egreso
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

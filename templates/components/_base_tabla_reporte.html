@@ -1,0 +1,21 @@
+<div class="flex-grow-1 overflow-hidden">
+    <div class="card shadow-sm border-0 h-100 d-flex flex-column">
+        <div class="card-body p-0 flex-grow-1 overflow-auto">
+            <div class="table-responsive h-100">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light sticky-top">
+                        {% block table_head %}
+                        {% endblock %}
+                    </thead>
+
+                    <tbody>
+                        {% block table_body %}
+                        {% endblock %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+{# templates/messages/modal_info.html #}
+
+{% if messages %}
+{% for message in messages %}
+{% with message.tags as tag %}
+<div class="modal fade" id="modalInfo" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            {# HEADER DINÁMICO #}
+            <div class="modal-header
+                {% if 'success' in tag %}bg-success text-white{% endif %}
+                {% if 'error' in tag %}bg-danger text-white{% endif %}
+                {% if 'warning' in tag %}bg-warning text-dark{% endif %}
+                {% if 'info' in tag %}bg-info text-dark{% endif %}
+            ">
+                <h5 class="modal-title">
+                    {% if 'success' in tag %}¡Listo!{% endif %}
+                    {% if 'error' in tag %}Error{% endif %}
+                    {% if 'warning' in tag %}Advertencia{% endif %}
+                    {% if 'info' in tag %}Información{% endif %}
+                </h5>
+            </div>
+
+            {# CUERPO #}
+            <div class="modal-body text-center">
+                <p class="mb-0">
+                    {{ message }}
+                </p>
+            </div>
+
+            {# FOOTER DINÁMICO #}
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn
+                    {% if 'success' in tag %}btn-success{% endif %}
+                    {% if 'error' in tag %}btn-danger{% endif %}
+                    {% if 'warning' in tag %}btn-warning{% endif %}
+                    {% if 'info' in tag %}btn-info{% endif %}
+                " data-bs-dismiss="modal">
+
+                    {% if 'success' in tag %}
+                    <i class="fa-solid fa-thumbs-up"></i> Ok
+                    {% elif 'error' in tag %}
+                    <i class="fa-solid fa-xmark"></i> Cerrar
+                    {% elif 'warning' in tag %}
+                    <i class="fa-solid fa-triangle-exclamation"></i> Ok
+                    {% elif 'info' in tag %}
+                    <i class="fa-solid fa-circle-info"></i> Ok
+                    {% endif %}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modalElement = document.getElementById('modalInfo');
+
+    // 🔥 Evita doble inicialización
+    if (modalElement && !modalElement.classList.contains('modal-initialized')) {
+
+        modalElement.classList.add('modal-initialized');
+
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+
+        // 🔥 Limpieza completa al cerrar
+        modalElement.addEventListener('hidden.bs.modal', function () {
+
+            document.body.classList.remove('modal-open');
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+            {% if "redirect-ver_ventas" in message.tags %}
+                window.location.href = "{% url 'ver_ventas' %}";
+            {% endif %}
+        });
+
+    }
+
+});
+</script>
+{% endwith %}
+{% endfor %}
+{% endif %}
+

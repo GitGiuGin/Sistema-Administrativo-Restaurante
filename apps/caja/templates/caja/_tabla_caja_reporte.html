@@ -1,0 +1,18 @@
+{% extends "components/_base_tabla_reporte.html" %}
+
+{% block table_head %}
+<tr>
+    <th>Fecha</th>
+    <th class="text-end">C. Ventas</th>
+    <th class="text-end">Total (Bs)</th>
+    <th class="text-end">Efectivo (Bs)</th>
+    <th class="text-end">QR (Bs)</th>
+    <th class="text-end">Gastos (Bs)</th>
+    <th class="text-end">Ganancia (Bs)</th>
+    <th class="text-center">Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+    {% include "venta/reportes/_fila_ventas.html" %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% for venta in ventas %}
+<div class="modal fade" id="detalleVentaModal{{ venta.id }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content p-3">
+
+            <!-- Header -->
+            <div class="text-center border-bottom pb-2 mb-2">
+                <h6 class="mb-0 fw-bold">UMAMI RESTAURANTE</h6>
+                <small>Recibo de Venta</small><br>
+                <small>Venta #{{ venta.id }}</small><br>
+                <small>{{ venta.fecha|date:"d/m/Y H:i" }}</small>
+            </div>
+
+            <!-- Productos -->
+            <table class="table table-sm table-borderless mb-2">
+                <thead class="border-bottom">
+                    <tr>
+                        <th>Prod</th>
+                        <th class="text-end">P. Unit</th>
+                        <th class="text-center">Cant</th>
+                        <th class="text-end">Subt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detalle in venta.detalles.all %}
+                    <tr>
+                        <td>{{ detalle.producto.nombre }}</td>
+                        <td class="text-end">{{ detalle.precio_unitario }}</td>
+                        <td class="text-center">{{ detalle.cantidad }}</td>
+                        <td class="text-end">{{ detalle.subtotal }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Total -->
+            <div class="border-top pt-2">
+                <div class="d-flex justify-content-between fw-bold fs-5">
+                    <span>Total:</span>
+                    <span>Bs {{ venta.total }}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endfor %}

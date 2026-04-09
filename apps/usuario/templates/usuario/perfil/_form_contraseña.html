@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h5 class="modal-title">
+        <i class="fa-solid fa-key me-2"></i>
+        Cambiar contraseña - {{ usuario.username }}
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<form id="formCambiarPassword" method="POST" action="{% url 'cambiar_password' %}">
+    {% csrf_token %}
+
+    <div class="modal-body">
+
+        <input type="hidden" name="user_id" value="{{ usuario.id }}">
+
+        <div class="mb-3">
+            <label>Contraseña anterior</label>
+            <input type="password" name="password_anterior" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Nueva contraseña</label>
+            <input type="password" name="password1" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Confirmar contraseña</label>
+            <input type="password" name="password2" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+    
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-danger">
+            <i class="fa-solid fa-key me-2"></i> Cambiar
+        </button>
+    </div>
+</form>
+

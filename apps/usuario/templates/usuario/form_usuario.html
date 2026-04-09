@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid h-100 d-flex flex-column overflow-hidden">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-user-plus text-primary me-2"></i>
+                {% if modo == "crear" %}
+                    Crear Nuevo Usuario
+                {% else %}
+                    Editar Usuario
+                {% endif %}
+            </h4>
+            <p class="text-muted mb-0 small">
+                Complete los datos para registrar un nuevo usuario
+            </p>
+        </div>
+        <a href="{% url 'page_usuario' %}" class="btn btn-secondary shadow-sm">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Volver
+        </a>
+    </div>
+
+    <form method="post"
+        action="{% if modo == 'editar' %}
+                    {% url 'editar_usuario' token %}
+                {% else %}
+                    {% url 'crear_usuario' %}
+                {% endif %}"
+        class="flex-grow-1 overflow-auto">
+        {% csrf_token %}
+
+        <!-- DATOS PERSONALES -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light fw-semibold">Datos Personales</div>
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label">Nombres</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.first_name }}{% else %}{{ data.first_name|default:'' }}{% endif %}" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Apellidos</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.last_name }}{% else %}{{ data.last_name|default:'' }}{% endif %}" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="documento" class="form-label">Documento</label>
+                        <input type="text" name="documento" id="documento" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.documento }}{% else %}{{ data.documento|default:'' }}{% endif %}" required>
+                        <small class="text-danger">Entre 5 y 20 caracteres alfanuméricos</small>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" name="telefono" id="telefono" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.telefono }}{% else %}{{ data.telefono|default:'' }}{% endif %}" required>
+                        <small class="text-danger">Entre 7 y 20 dígitos, puede empezar con +</small>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.fecha_nacimiento|date:"Y-m-d" }}{% else %}{{ data.fecha_nacimiento|default:'' }}{% endif %}" required>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- DIRECCIÓN -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light fw-semibold">Dirección</div>
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label for="zona" class="form-label">Zona</label>
+                        <input type="text" name="zona" id="zona" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.zona }}{% else %}{{ data.zona|default:'' }}{% endif %}" placeholder="Ej: 'Centro', 'Norte', 'Sur', etc." required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="calle" class="form-label">Calle</label>
+                        <input type="text" name="calle" id="calle" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.calle }}{% else %}{{ data.calle|default:'' }}{% endif %}" placeholder="Ej: 'Av. Siempre Viva', 'Calle Falsa', etc." required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="numero_casa" class="form-label">Número de Casa</label>
+                        <input type="text" name="numero_casa" id="numero_casa" class="form-control" 
+                        value="{% if modo == 'editar' %}{{ user_obj.numero_casa }}{% else %}{{ data.numero_casa|default:'' }}{% endif %}" placeholder="Ej: '123', etc." required>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ROLES Y PERMISOS -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light fw-semibold">Roles y Permisos</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="group" class="form-label">Rol</label>
+                        <select name="group" class="form-select" required>
+                            <option value="" hidden>Seleccione un rol</option>
+                            {% for grupo in grupos %}
+                                <option value="{{ grupo.id }}"
+                                    {% if grupo.id == current_group_id %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ grupo.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón -->
+        <div class="text-end mb-4">
+            <button type="submit" class="btn btn-primary shadow-sm">
+                <i class="fa-solid fa-save me-2"></i>
+                Guardar Usuario
+            </button>
+        </div>
+
+    </form>
+
+</div>
+{% include "messages/modal_info.html" %}
+<script src="{% static 'js/messages/modal_info.js' %}"></script>
+{% endblock %}

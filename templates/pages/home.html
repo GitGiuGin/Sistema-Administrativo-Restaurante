@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid h-100 d-flex flex-column overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-0">
+                <i class="fa-solid fa-sack-dollar text-warning"></i> POS cajero
+            </h3>
+            <small class="text-muted">
+                Resumen del día
+            </small>
+        </div>
+    </div>
+
+    <!-- INFORMACIÓN DE CAJA -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="fa-solid fa-user fa-lg text-secondary mb-2"></i>
+                    <p class="text-muted mb-1">Cajero</p>
+                    <h6 class="mb-0">{{ request.user.get_full_name }}</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="fa-solid fa-receipt fa-lg text-warning mb-2"></i>
+                    <p class="text-muted mb-1">Ventas del turno</p>
+                    <h6 class="mb-0">
+                        {{ movimientos.count }} 
+                        {% if movimientos.count == 1 %}
+                        venta
+                        {% else %}
+                        ventas
+                        {% endif %}
+                    </h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="fa-solid fa-clock fa-lg text-primary mb-2"></i>
+                    <p class="text-muted mb-1">Hora de apertura</p>
+                    {% if turno %}
+                    <h6 class="mb-0">{{ turno.fecha_apertura|time:"H:i" }}</h6>
+                    {% else %}
+                    <h6 class="mb-0 text-muted">--:--</h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    {% if turno %}
+                    <i class="fa-solid fa-door-open fa-lg text-success mb-2"></i>
+                    <p class="text-muted mb-1">Estado de Caja</p>
+                    <span class="badge bg-success fs-6">Caja abierta</span>
+                    {% else %}
+                    <i class="fa-solid fa-door-closed fa-lg text-danger mb-2"></i>
+                    <p class="text-muted mb-1">Estado de Caja</p>
+                    <span class="badge bg-danger fs-6">Caja cerrada</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <a href="{% url 'ventas' %}" class="btn btn-success w-100 py-4">
+                <i class="fa-solid fa-cart-plus fa-2x mb-2"></i><br>
+                Nueva Venta
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'ver_ventas' %}" class="btn btn-primary w-100 py-4">
+                <i class="fa-solid fa-receipt fa-2x mb-2"></i><br>
+                Ver Ventas
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'ver_caja' %}" class="btn btn-warning w-100 py-4 text-white">
+                <i class="fa-solid fa-money-bill-transfer fa-2x mb-2"></i><br>
+                Movimientos de Caja
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <div class="text-center">
+                {% if turno %}
+                <button class="btn btn-danger w-100 py-4" data-bs-toggle="modal" data-bs-target="#cerrarCajaModal">
+                    <i class="fa-solid fa-lock fa-2x mb-2"></i><br>
+                    Cerrar caja
+                </button>
+                {% else %}
+                <a href="{% url 'abrir_caja' %}" class="btn btn-success w-100 py-4">
+                    <i class="fa-solid fa-lock-open fa-2x mb-2"></i><br>
+                    Abrir caja
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABLA BASE REUTILIZABLE -->
+    <div class="flex-grow-1 overflow-hidden">
+        <div class="card shadow-sm border-0 h-100 d-flex flex-column">
+            <div class="card-header">
+                <strong>Ventas recientes</strong>
+            </div>
+            <div class="card-body p-0 flex-grow-1 overflow-auto">
+                <div class="table-responsive h-100">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Trans.</th>
+                                <th>Hora</th>
+                                <th>Método</th>
+                                <th class="text-end">Total (Bs)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for movimiento in movimientos %}
+                            <tr>
+                                <td>#{{ forloop.counter }}</td>
+                                <td>{{ movimiento.venta.fecha|time:"H:i" }}</td>
+                                <td>
+                                    {% if movimiento.venta.metodo_pago == "Efectivo" %}
+                                    <span class="badge bg-success">Efectivo</span>
+                                    {% else %}
+                                    <span class="badge bg-info">QR</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end fw-bold text-success">
+                                    {{ movimiento.monto }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cerrarCajaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form method="post" action="{% url 'cerrar_caja' %}">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-lock"></i> Cerrar caja
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Monto contado</label>
+                        <input type="number" step="0.01" name="monto_cierre" class="form-control"
+                            placeholder="Ej: 520.00" required>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-danger">
+                        Confirmar cierre
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+{% include "messages/modal_info.html" %}
+{% endblock %}

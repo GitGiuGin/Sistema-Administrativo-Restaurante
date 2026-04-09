@@ -1,0 +1,164 @@
+{% load static %}
+{% load grupos %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+<!-- SIDEBAR -->
+<nav class="sidebar bg-dark text-white d-flex flex-column p-3">
+    <a class="navbar-brand text-white mb-4" href="{% url 'inicio' %}">
+        Umami Restaurante
+    </a>
+
+    <ul class="nav nav-pills flex-column mb-auto">
+
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="{% url 'inicio' %}">
+                Inicio
+            </a>
+        </li>
+
+        <!-- PRODUCTOS -->
+        {% if request.user|has_any_group:"Administrador" %}
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                href="#submenu-productos" role="button" aria-expanded="false" aria-controls="submenu-productos">
+                Productos
+                <span class="ms-2">&#9662;</span>
+            </a>
+
+            <!-- SUBMENU -->
+            <div class="collapse ps-3" id="submenu-productos">
+                <ul class="nav flex-column mt-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'productos' %}">
+                            Todos los productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'categorias' %}">
+                            Categorías
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- VENTAS -->
+        {% if request.user|has_any_group:"Administrador,Supervisor,Cajero" %}
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                href="#submenu-ventas" role="button" aria-expanded="false" aria-controls="submenu-ventas">
+                Ventas
+                <span class="ms-2">&#9662;</span>
+            </a>
+
+            <!-- SUBMENU -->
+            <div class="collapse ps-3" id="submenu-ventas">
+                <ul class="nav flex-column mt-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'ver_caja' %}">
+                            Caja
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'ver_ventas' %}">
+                            Pedidos
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- ADMINISTRACION -->
+        {% if request.user|has_any_group:"Administrador, Supervisor" %}
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                href="#submenu-administracion" role="button" aria-expanded="false"
+                aria-controls="submenu-administracion">
+                Administración
+                <span class="ms-2">&#9662;</span>
+            </a>
+
+            <!-- SUBMENU -->
+            <div class="collapse ps-3" id="submenu-administracion">
+                <ul class="nav flex-column mt-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'page_usuario' %}">
+                            Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'page_gastos' %}">
+                            Gastos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'ver_turnos' %}">
+                            Turnos
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <!-- REPORTES -->
+        {% if request.user|has_any_group:"Administrador,Supervisor" %}
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                href="#submenu-reportes" role="button" aria-expanded="false" aria-controls="submenu-reportes">
+                Reportes
+                <span class="ms-2">&#9662;</span>
+            </a>
+
+            <!-- SUBMENU -->
+            <div class="collapse ps-3" id="submenu-reportes">
+                <ul class="nav flex-column mt-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'reporte_ventas_diaria' %}">
+                            Reporte diario
+                        </a>
+                    </li>
+                    {% if request.user|has_any_group:"Administrador" %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="{% url 'reporte_ventas_mensual' %}">
+                            Reporte mensual
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </li>
+        {% endif %}
+
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="#">Contacto</a>
+        </li>
+
+    </ul>
+
+    <!-- SECCIÓN INFERIOR -->
+    <ul class="nav nav-pills flex-column mt-auto pt-3 border-top border-secondary">
+
+        {% if request.user.is_authenticated %}
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white d-flex align-items-center" href="{% url 'page_perfil' %}">
+                <i class="fa-solid fa-user me-2"></i>
+                {{ request.user.username|upper }}
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="nav-link text-white d-flex align-items-center w-100 text-start">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i>
+                    Cerrar sesión
+                </button>
+            </form>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>

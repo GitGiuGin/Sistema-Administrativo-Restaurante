@@ -1,0 +1,28 @@
+{% extends "categoria/_tabla_base.html" %}
+
+{% block titulo %}
+Categorías inhabilitadas
+{% endblock %}
+
+{% block filas %}
+{% for categoria in categorias_inhabilitadas %}
+<tr>
+    <td></td>
+    <td>{{ categoria.nombre|upper }}</td>
+    <td class="text-center">{{ categoria.abreviatura }}</td>
+    <td class="text-center">
+        <a href="{% url 'habilitar_categoria' categoria.id %}"
+            class="btn btn-sm btn-outline-success"
+            title="Habilitar categoría">
+            <i class="fa-solid fa-check"></i>
+        </a>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" class="text-muted text-center">
+        No hay categorías inhabilitadas
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

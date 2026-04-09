@@ -1,0 +1,36 @@
+{% load grupos %}
+{% for movimiento in movimientos %}
+<tr>
+    <td>{{ movimiento.fecha|date:"d/m/Y" }}</td>
+    <td>{{ movimiento.usuario|upper }}</td>
+    <td class="text-center">
+        {{ movimiento.tipo }}
+    </td>
+    <td class="text-end">{{ movimiento.monto }}</td>
+    <td class="text-center">
+        {{ movimiento.venta.metodo_pago|upper|default:"-" }}
+    </td>
+    <td>
+        {{ movimiento.concepto }}
+    </td>
+    {% if request.user|has_any_group:"Administrador,Supervisor" %}
+    <td class="text-center">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+        data-bs-target="#detalleVentaModal{{ movimiento.venta.id }}" data-venta-id="{{ movimiento.venta.id }}"
+        {% if movimiento.tipo == "EGRESO" %}
+            disabled
+        {% endif %}
+        title="Detalles movimiento">
+            <i class="fa-solid fa-eye"></i>
+        </button>
+    </td>
+    {% endif %}
+</tr>
+{% empty %}
+<tr>
+    <td colspan="8" class="text-center text-muted py-4">
+        No movimientos registrados.
+    </td>
+</tr>
+{% endfor %}
+

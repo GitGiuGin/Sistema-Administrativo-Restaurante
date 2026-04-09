@@ -1,0 +1,26 @@
+{% extends "usuario/components/auth_base.html" %}
+
+{% block title %}UMAMI | Recuperar Contraseña{% endblock %}
+
+{% block form_content %}
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="input-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" placeholder="Ingresa tu usuario" required>
+    </div>
+
+    <div class="input-group">
+        <label for="password">Contraseña nueva</label>
+        <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+    </div>
+
+    <button type="submit" class="btn-login">Cambiar contraseña</button>
+</form>
+
+<div class="extra">
+    ¿Recordaste tu contraseña?
+    <a href="{% url 'login' %}">Volver al login</a>
+</div>
+{% endblock %}

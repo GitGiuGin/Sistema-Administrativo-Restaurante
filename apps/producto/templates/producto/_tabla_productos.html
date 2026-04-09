@@ -1,0 +1,16 @@
+<div class="table-wrapper border rounded-3 p-3">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Producto</th>
+                <th class="text-center">Categoría</th>
+                <th class="text-center">Costo (Bs)</th>
+                <th class="text-center">Venta (Bs)</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-{{ tipo }}" class="table-body-scroll">
+            {% include "producto/_tabla_filas.html" with productos=productos tipo=tipo %}
+        </tbody>
+    </table>
+</div>

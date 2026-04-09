@@ -1,0 +1,46 @@
+.table-body-scroll {
+    scrollbar-gutter: stable;
+    display: block;
+    max-height: clamp(280px, 67vh, 550px);
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.table-body-scroll tr:last-child td {
+    padding-bottom: 1rem;
+}
+
+.table-body-scroll tr,
+thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+thead th {
+    white-space: nowrap;
+}
+
+@media (max-height: 700px) {
+    thead th {
+        font-size: 12px;
+        padding: 0.35rem 0.3rem;
+    }
+    
+    .table-body-scroll {
+        font-size: 12px;
+        line-height: 1.25;
+        max-height: clamp(100px, 50vh, 250px);
+    }
+
+    .table-body-scroll td,
+    .table-body-scroll th {
+        padding: 0.35rem 0.2rem;
+    }
+
+    .table-body-scroll input[type="number"] {
+        max-width: 48px;
+        font-size: 12px;
+        padding: 0.15rem 0.3rem;
+    }
+}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="vh-100 d-flex flex-column">
+
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+            <h3 class="fw-bold mb-1">
+                <i class="fa-solid fa-utensils"></i> Registrar pedido
+            </h3>
+            <small class="text-muted">Seleccione productos y genere la venta</small>
+        </div>
+        <a href="{% url 'ver_ventas' %}" class="btn btn-secondary shadow-sm">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Volver
+        </a>
+    </div>
+
+    <!-- Layout principal -->
+    <div class="row flex-grow-1 min-vh-0">
+        <!-- Selección de productos (60%) -->
+        {% include "venta/_seleccion_producto.html" %}
+
+        <!-- Carrito (40%) -->
+        {% include "venta/_carrito_compras.html" %}
+
+    </div>
+</div>
+{% include "messages/modal_info.html" %}
+<script src="{% static 'venta/js/filtro_categoria.js' %}"></script>
+<script src="{% static 'venta/js/carrito.js' %}"></script>
+<script src="{% static 'venta/js/venta_registro.js' %}"></script>
+{% endblock %}

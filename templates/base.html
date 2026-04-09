@@ -1,0 +1,39 @@
+{% load static %}
+{% load grupos %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umami - {% block title %} El quinto sabor{% endblock %}</title>
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
+    <link href="{% static 'fonts/fontawesome/css/fontawesome.css' %}" rel="stylesheet">
+    <link href="{% static 'fonts/fontawesome/css/brands.css' %}" rel="stylesheet">
+    <link href="{% static 'fonts/fontawesome/css/solid.css' %}" rel="stylesheet">
+    <style>
+        .main-layout {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body class="overflow-hidden">
+    <div class="d-flex">
+        <!-- SIDEBAR -->
+        {% include "includes/navbar.html" %}
+
+        <!-- CONTENIDO -->
+        <main class="flex-fill p-4 main-layout">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    <!-- JS global -->
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

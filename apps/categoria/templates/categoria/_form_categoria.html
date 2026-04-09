@@ -1,0 +1,14 @@
+<form class="mb-4" method="post" action="{% url 'crear_categoria' %}">
+    {% csrf_token %}
+    <div class="row align-items-end">
+        <div class="col-md-4">
+            <label class="form-label">Nombre de categoría</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-success">
+                <i class="fa-solid fa-plus"></i> Agregar
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,19 @@
+{% extends "messages/modal_alert.html" %}
+
+{% block modal_id %}confirmHabilitarModal{% endblock %}
+{% block modal_label_id %}confirmHabilitarModalLabel{% endblock %}
+{% block modal_titulo %}Habilitar producto{% endblock %}
+{% block modal_cuerpo %}
+¿Seguro que quieres habilitar el producto <strong id="nombreProducto"></strong>?
+{% endblock %}
+{% block modal_botones %}
+<form method="post" id="formHabilitar">
+    {% csrf_token %}
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+    </button>
+    <button type="submit" class="btn btn-success">
+        <i class="fa-solid fa-check"></i> Habilitar
+    </button>
+</form>
+{% endblock %}

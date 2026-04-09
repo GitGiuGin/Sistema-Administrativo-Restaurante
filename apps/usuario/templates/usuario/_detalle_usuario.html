@@ -1,0 +1,86 @@
+<div class="card shadow border-0 rounded-4 overflow-hidden w-100">
+
+    <!-- Header tipo credencial -->
+    <div class="bg-primary text-white text-center py-3">
+        <h6 class="mb-0 fw-bold">INFORAMCIÓN DE USUARIO</h6>
+        <small>Sistema Administrativo</small>
+    </div>
+
+    <div class="card-body p-4">
+
+        <div class="d-flex align-items-center mb-4">
+
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fs-4 fw-semibold" style="width: 80px; height: 80px;">
+                {{ user.first_name|first }}{{ user.last_name|first }}
+            </div>
+
+            <div class="ms-4">
+                <h5 class="mb-1 fw-bold">
+                    {{ user.last_name }} {{ user.first_name }}
+                </h5>
+                <div class="text-muted small">
+                    @{{ user.username }}
+                </div>
+
+                {% for group in user.groups.all %}
+                <span class="badge bg-dark mt-2">
+                    {{ group.name }}
+                </span>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="row small">
+            <div class="col-5 mb-2">
+                <span class="text-muted">Documento</span><br>
+                <strong>{{ user.documento|default:"—" }}</strong>
+            </div>
+
+            <div class="col-5 mb-2">
+                <span class="text-muted">Teléfono</span><br>
+                <strong>{{ user.telefono|default:"—" }}</strong>
+            </div>
+
+            <div class="col-5 mb-2">
+                <span class="text-muted">Zona</span><br>
+                <strong>{{ user.zona|default:"—" }}</strong>
+            </div>
+            <div class="col-5 mb-2">
+                <span class="text-muted">Calle</span><br>
+                <strong>{{ user.calle|default:"—" }}</strong>
+            </div>
+            <div class="col-2 mb-2">
+                <span class="text-muted">Casa</span><br>
+                <strong>#{{ user.numero_casa|default:"—" }}</strong>
+            </div>
+
+            <div class="col-5 mb-2">
+                <span class="text-muted">Nacimiento</span><br>
+                <strong>{{ user.fecha_nacimiento|date:"d/m/Y"|default:"—" }}</strong>
+            </div>
+
+            <div class="col-6 mb-2">
+                <span class="text-muted">Estado</span><br>
+                {% if user.is_active %}
+                <span class="badge bg-success">Activo</span>
+                {% else %}
+                <span class="badge bg-danger">Inactivo</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="text-center">
+            {% if user.puede_cerrar_caja %}
+                <span class="badge bg-success">Puede cerrar caja</span>
+            {% else %}
+                <span class="badge bg-secondary">No puede cerrar caja</span>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
