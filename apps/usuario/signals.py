@@ -9,8 +9,8 @@ from decouple import config
 def create_superuser(sender, **kwargs):
     User = get_user_model()
 
-    username = config(settings.SUPERUSER_USERNAME, default=None)
-    password = config(settings.SUPERUSER_PASSWORD, default=None)
+    username = settings.SUPERUSER_USERNAME
+    password = settings.SUPERUSER_PASSWORD
 
     if username and password:
         if not User.objects.filter(username=username).exists():
